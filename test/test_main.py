@@ -11,6 +11,9 @@ class TestGetRandomFunction(unittest.TestCase):
     def test_get_random_float(self):
         self.assertIsInstance(get_random_float(), float)
 
+    def test_get_random_string(self):
+        self.assertIsInstance(get_random_string(), str)
+
 
 if __name__ == '__main__':
     unittest.main()
