@@ -20,4 +20,4 @@ jobs:
 
       - name: Run unittest tests
         run: |
-          python -m unittest discover -s test -p "*.py"
+          python -m unittest discover -s test -p "*.py" --verbose
