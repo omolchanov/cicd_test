@@ -1,4 +1,4 @@
-name: Python Test on Commit
+name: Python Test on Feature branch commit
 
 on:
   push:
