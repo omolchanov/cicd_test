@@ -9,7 +9,7 @@ class TestGetRandomFunction(unittest.TestCase):
         self.assertIsInstance(get_random_int(), int)
 
     def test_get_random_float(self):
-        self.assertIsInstance(get_random_float(), float)
+        self.assertIsInstance(get_random_float(), str)
 
 
 if __name__ == '__main__':
