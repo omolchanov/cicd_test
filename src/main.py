@@ -6,6 +6,7 @@ def get_random_int():
 
 
 def get_random_float():
+    "Test"
     return random.random()
 
 
