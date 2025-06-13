@@ -10,6 +10,10 @@ def get_random_float():
     return random.random()
 
 
+def get_random_string():
+    return "sfsdfsd"
+
+
 if __name__ == '__main__':
     print(get_random_int())
     print(get_random_float())
