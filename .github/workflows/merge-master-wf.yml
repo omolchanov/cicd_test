@@ -1,4 +1,4 @@
-name: Python Test on Master Merge
+name: Python Test and Build on Master Merge
 
 on:
   push:
@@ -18,15 +18,30 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install test dependencies
+        run: pip install -r requirements.txt || true  # optional if you use requirements.txt
+
       - name: Run unittest tests
-        run: |
-          python -m unittest discover -s test -p "*.py" --verbose
+        run: python -m unittest discover -s test -p "*.py" --verbose
+
+  build:
+    needs: test  # ✅ Wait until tests pass
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
 
       - name: Install build tools
         run: |
           python -m pip install --upgrade pip
           pip install build wheel setuptools
-          
+
       - name: Build wheel
         run: python -m build
 
