@@ -9,7 +9,7 @@ class TestGetRandomFunction(unittest.TestCase):
         self.assertIsInstance(get_random_int(), int)
 
     def test_get_random_float(self):
-        self.assertIsInstance(get_random_float(), str)
+        self.assertIsInstance(get_random_float(), float)
 
     def test_get_random_string(self):
         """
@@ -17,6 +17,9 @@ class TestGetRandomFunction(unittest.TestCase):
         :return:
         """
         self.assertIsInstance(get_random_string(), str)
+
+    def test_add(self):
+        self.assertEqual(add(), 4)
 
 
 if __name__ == '__main__':

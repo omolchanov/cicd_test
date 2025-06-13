@@ -6,12 +6,16 @@ def get_random_int():
 
 
 def get_random_float():
-    "Test"
+    """Test"""
     return random.random()
 
 
 def get_random_string():
     return "sfsdfsd"
+
+
+def add():
+    return 2+2
 
 
 if __name__ == '__main__':
