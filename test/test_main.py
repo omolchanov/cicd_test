@@ -12,6 +12,10 @@ class TestGetRandomFunction(unittest.TestCase):
         self.assertIsInstance(get_random_float(), float)
 
     def test_get_random_string(self):
+        """
+        Test
+        :return:
+        """
         self.assertIsInstance(get_random_string(), str)
 
 
