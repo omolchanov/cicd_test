@@ -12,7 +12,7 @@ setup(
     install_requires=[],
     entry_points={
         'console_scripts': [
-            'cicd = main:main',
+            'cicd = src.main:main',
         ]
     }
 )
