@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='ci_cd_test_omolchanov',
-    version='0.1.4',
+    version='0.1.5',
     py_modules=['main'],
     license='MIT',
     packages=find_packages(where='src'),
@@ -13,7 +13,7 @@ setup(
     install_requires=[],
     entry_points={
         'console_scripts': [
-            'my_app_test = ci_cd_test_omolchanov:main',
+            'my_app_test = ci_cd_test_omolchanov.main:main',
         ]
     }
 )
