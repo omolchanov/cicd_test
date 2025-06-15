@@ -59,7 +59,7 @@ jobs:
 #          python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/* --verbose
 
   deploy:
-      needs: build
+#      needs: build
       runs-on: ubuntu-latest
 
       steps:
