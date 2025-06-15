@@ -1,6 +1,6 @@
 import unittest
 
-from src.ci_cd_test_omolchaov.main import *
+from src.ci_cd_test_omolchanov.main import *
 
 
 class TestGetRandomFunction(unittest.TestCase):
