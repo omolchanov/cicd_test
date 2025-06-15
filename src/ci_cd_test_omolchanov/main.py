@@ -1,5 +1,6 @@
 import random
 import time
+import sys
 
 
 def get_random_int():
@@ -24,6 +25,7 @@ def main():
     print(get_random_int())
     print(get_random_float())
     print(get_random_string(), '\n')
+    sys.stdout.flush()
 
 
 if __name__ == '__main__':
