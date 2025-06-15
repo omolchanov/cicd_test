@@ -59,35 +59,40 @@ jobs:
 #          python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/* --verbose
 
   deploy:
-#      needs: build
-      runs-on: ubuntu-latest
-
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v3
-
-        - name: Set up Python
-          uses: actions/setup-python@v4
-          with:
-            python-version: '3.12'
-
-        - name: Uninstall current package version (if any)
-          run: |
-            pip uninstall -y ci-cd-test-omolchanov || echo "Package not installed, skipping uninstall"
-
-        - name: Install package from TestPyPI
-          run: |
-            python -m pip install --upgrade pip
-            pip install -i https://test.pypi.org/simple/ ci-cd-test-omolchanov
-
-        - name: Trigger PythonAnywhere webapp reload
-          env:
-            PA_API_TOKEN: ${{ secrets.PYTHONANYWHERE_API_TOKEN }}
-            PA_USERNAME: omolchanov
-          run: |
-            curl -X POST "https://www.pythonanywhere.com/api/v0/user/$PA_USERNAME/" \
-              -H "Authorization: Token $PA_API_TOKEN"
-
-        - name: Run Application
-          run: |
-            my_app_test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Uninstall, reinstall package, run CLI, and reload webapp on PythonAnywhere
+        env:
+          PA_API_TOKEN: ${{ secrets.PYTHONANYWHERE_API_TOKEN }}
+          PA_USERNAME: omolchanov
+        run: |
+          RESPONSE=$(curl -s -X POST "https://www.pythonanywhere.com/api/v0/user/$PA_USERNAME/consoles/" \
+            -H "Authorization: Token $PA_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"command": "/bin/bash"}')
+          
+          CONSOLE_ID=$(echo "$RESPONSE" | jq -r '.id')
+          echo "Console ID: $CONSOLE_ID"
+          
+          send_command() {
+            local CMD=$1
+            curl -s -X POST "https://www.pythonanywhere.com/api/v0/user/$PA_USERNAME/consoles/$CONSOLE_ID/send_input/" \
+              -H "Authorization: Token $PA_API_TOKEN" \
+              -H "Content-Type: application/json" \
+              -d "{\"input\": \"$CMD\"}"
+          }
+          
+          send_command "pip uninstall -y ci-cd-test-omolchanov || true\n"
+          sleep 5
+          
+          send_command "pip install -i https://test.pypi.org/simple/ --upgrade ci-cd-test-omolchanov\n"
+          sleep 10
+          
+          # Run your CLI command
+          send_command "my_app_test\n"
+          sleep 5
+          
+          send_command "exit\n"
+          
+          curl -X POST "https://www.pythonanywhere.com/api/v0/user/$PA_USERNAME/webapps/mywebapp/reload/" \
+            -H "Authorization: Token $PA_API_TOKEN"
