@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='CICDTest_omolchanov',
-    version='0.1.4',
+    version='0.1.5',
     py_modules=['main'],
     license='MIT',
     package_dir={'': 'src'},
@@ -12,7 +12,7 @@ setup(
     install_requires=[],
     entry_points={
         'console_scripts': [
-            'cicd = src.main:main',
+            'my_app_test = src.main:main',
         ]
     }
 )
