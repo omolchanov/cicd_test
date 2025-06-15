@@ -13,7 +13,7 @@ def get_random_float():
 
 
 def get_random_string():
-    return "sfsdfsd"
+    return "sfsdfsd1"
 
 
 def add():
