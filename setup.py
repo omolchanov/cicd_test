@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='ci_cd_test_omolchanov',
-    version='0.1.5',
+    version='0.1.6',
     py_modules=['main'],
     license='MIT',
     packages=find_packages(where='src'),

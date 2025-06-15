@@ -1,4 +1,5 @@
 import random
+import time
 
 
 def get_random_int():
@@ -19,10 +20,13 @@ def add():
 
 
 def main():
+    print(time.time())
     print(get_random_int())
     print(get_random_float())
+    print(get_random_string(), '\n')
 
 
 if __name__ == '__main__':
-    main()
-
+    while True:
+        main()
+        time.sleep(2)
