@@ -2,8 +2,10 @@ from setuptools import setup, find_packages
 
 setup(
     name='CICDTest_omolchanov',
-    version='0.1.2',
+    version='0.1.3',
+    py_modules=['main'],
     license='MIT',
+    package_dir={'': 'src'},
     packages=find_packages(),  # No 'where' needed
     description='Short description',
     long_description=open('README.md', encoding='utf-8').read(),
@@ -11,7 +13,7 @@ setup(
     install_requires=[],
     entry_points={
         'console_scripts': [
-            'cicd=cicdtest_omolchanov.main:main',
+            'cicd = main:main',
         ]
-    },
+    }
 )

@@ -17,7 +17,6 @@ def get_random_string():
 def add():
     return 2+2
 
-
 if __name__ == '__main__':
     print(get_random_int())
     print(get_random_float())
