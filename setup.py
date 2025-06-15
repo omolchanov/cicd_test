@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='CICDTest_omolchanov',
-    version='0.1.3',
+    version='0.1.4',
     py_modules=['main'],
     license='MIT',
     package_dir={'': 'src'},
