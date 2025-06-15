@@ -45,26 +45,27 @@ jobs:
       - name: Build wheel
         run: python -m build
 
-      - name: Upload built artifacts
-        uses: actions/upload-artifact@v4
+      - name: Upload wheel to GitHub Release
+        uses: softprops/action-gh-release@v1
         with:
-          name: dist
-          path: dist/
-
-
-  deploy:
-    needs: [test, build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install build tools
-        run: |
-         python -m pip install --upgrade pip
-         pip install build wheel setuptools twine
-
-      - name: Upload to TestPyPI
+          files: dist/*.whl
         env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.TEST_PYPI_API_TOKEN }}
-        run: |
-          python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/* --verbose
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+#  deploy:
+#    needs: [test, build]
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Install build tools
+#        run: |
+#         python -m pip install --upgrade pip
+#         pip install build wheel setuptools twine
+#
+#      - name: Upload to TestPyPI
+#        env:
+#          TWINE_USERNAME: __token__
+#          TWINE_PASSWORD: ${{ secrets.TEST_PYPI_API_TOKEN }}
+#        run: |
+#          python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/* --verbose
       
