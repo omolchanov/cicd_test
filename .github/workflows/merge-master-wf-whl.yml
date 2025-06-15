@@ -49,9 +49,10 @@ jobs:
         env:
           GEMFURY_API_TOKEN: ${{ secrets.GEMFURY_API_TOKEN }}
         run: |
-            curl -H "Authorization: Bearer $GEMFURY_API_TOKEN" \
-              -F package=@dist/*.whl \
-              https://push.fury.io/omolchanov/
+          ls dist/
+          WHEEL_FILE=$(ls dist/*.whl)
+          echo "Uploading $WHEEL_FILE"
+          curl -H "Authorization: Bearer $GEMFURY_API_TOKEN" -F package=@"$WHEEL_FILE" https://push.fury.io/omolchanov/
 
 
 
