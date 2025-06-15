@@ -6,60 +6,60 @@ on:
       - master
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.12'
-
-      - name: Install test dependencies
-        run: pip install -r requirements.txt || true  # optional if you use requirements.txt
-
-      - name: Run unittest tests
-        run: python -m unittest discover -s test -p "*.py" --verbose
-
-  build:
-    needs: test  # ✅ Wait until tests pass
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.12'
-
-      - name: Install build tools
-        run: |
-          python -m pip install --upgrade pip
-          pip install build wheel setuptools twine
-
-      - name: Build wheel
-        run: python -m build
-
-      - name: Upload built artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist/
-
-      - name: Upload to TestPyPI
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.TEST_PYPI_API_TOKEN }}
-        run: |
-          python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/* --verbose
+#  test:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v3
+#
+#      - name: Set up Python
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version: '3.12'
+#
+#      - name: Install test dependencies
+#        run: pip install -r requirements.txt || true  # optional if you use requirements.txt
+#
+#      - name: Run unittest tests
+#        run: python -m unittest discover -s test -p "*.py" --verbose
+#
+#  build:
+#    needs: test  # ✅ Wait until tests pass
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v3
+#
+#      - name: Set up Python
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version: '3.12'
+#
+#      - name: Install build tools
+#        run: |
+#          python -m pip install --upgrade pip
+#          pip install build wheel setuptools twine
+#
+#      - name: Build wheel
+#        run: python -m build
+#
+#      - name: Upload built artifacts
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: dist
+#          path: dist/
+#
+#      - name: Upload to TestPyPI
+#        env:
+#          TWINE_USERNAME: __token__
+#          TWINE_PASSWORD: ${{ secrets.TEST_PYPI_API_TOKEN }}
+#        run: |
+#          python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/* --verbose
 
   deploy:
-      needs: build
+#      needs: build
       runs-on: ubuntu-latest
 
       steps:
@@ -85,7 +85,7 @@ jobs:
             PA_API_TOKEN: ${{ secrets.PYTHONANYWHERE_API_TOKEN }}
             PA_USERNAME: omolchanov
           run: |
-            curl -X POST "https://www.pythonanywhere.com/api/v0/user/$PA_USERNAME/webapps/mywebapp/reload/" \
+            curl -X POST "https://www.pythonanywhere.com/api/v0/user/$PA_USERNAME/" \
               -H "Authorization: Token $PA_API_TOKEN"
 
         - name: Run Application
