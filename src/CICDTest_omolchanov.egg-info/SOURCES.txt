@@ -1,8 +1,0 @@
-README.md
-setup.py
-src/CICDTest_omolchanov.egg-info/PKG-INFO
-src/CICDTest_omolchanov.egg-info/SOURCES.txt
-src/CICDTest_omolchanov.egg-info/dependency_links.txt
-src/CICDTest_omolchanov.egg-info/entry_points.txt
-src/CICDTest_omolchanov.egg-info/top_level.txt
-test/test_main.py

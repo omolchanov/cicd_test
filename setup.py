@@ -11,7 +11,7 @@ setup(
     install_requires=[],
     entry_points={
         'console_scripts': [
-            'cli=cicdtest_omolchanov.main:main',
+            'cicd=cicdtest_omolchanov.main:main',
         ]
     },
 )
