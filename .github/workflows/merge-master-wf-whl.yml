@@ -8,73 +8,71 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.12'
 
-      - name: Install test dependencies
-        run: pip install -r requirements.txt || true  # optional if you use requirements.txt
+      - run: pip install -r requirements.txt || true
 
-      - name: Run unittest tests
-        run: python -m unittest discover -s test -p "*.py" --verbose
+      - run: python -m unittest discover -s test -p "*.py" --verbose
 
   build:
-    needs: test  # Wait until tests pass
+    needs: test
     runs-on: ubuntu-latest
+    outputs:
+      wheel-file: ${{ steps.get_wheel.outputs.wheel_file }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.12'
 
-      - name: Install build tools
-        run: |
+      - run: |
           python -m pip install --upgrade pip
           pip install build wheel setuptools twine
 
-      - name: Build wheel
-        run: python -m build
+      - run: python -m build
 
-      - name: Upload wheel to Gemfury
+      # Capture wheel filename in output
+      - id: get_wheel
+        run: echo "wheel_file=$(ls dist/*.whl)" >> $GITHUB_OUTPUT
+
+      - name: Upload wheel as artifact
+        uses: actions/upload-artifact@v3
         with:
           name: wheel-dist
+          path: dist/*.whl
+
+      - name: Upload wheel to Gemfury
         env:
           GEMFURY_API_TOKEN: ${{ secrets.GEMFURY_API_TOKEN }}
         run: |
-          ls dist/
           WHEEL_FILE=$(ls dist/*.whl)
-          echo "Uploading $WHEEL_FILE"
+          echo "Uploading $WHEEL_FILE to Gemfury"
           curl -H "Authorization: Bearer $GEMFURY_API_TOKEN" -F package=@"$WHEEL_FILE" https://push.fury.io/omolchanov/
-
-
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Download wheel artifact
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
           name: wheel-dist
-          path: dist/*.whl
+          path: dist
 
-      - name: Install twine
-        run: python -m pip install --upgrade twine
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - run: python -m pip install --upgrade twine
 
       - name: Upload to PyPI
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: |
-          twine upload dist/* --verbose
-      
+        run: twine upload dist/* --verbose
